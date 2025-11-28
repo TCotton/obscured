@@ -27,7 +27,12 @@
 		"test:watch": "vitest",
 		"prepublishOnly": "npm run build"
 	},
-	"keywords": ["obscured", "sensitive", "security", "masking"],
+	"keywords": [
+		"obscured",
+		"sensitive",
+		"security",
+		"masking"
+	],
 	"author": "",
 	"license": "MIT",
 	"devDependencies": {
