@@ -18,8 +18,8 @@ npm install obscured
 ```
 
 ## Requirements
-- Node.js >= 18.0.0
-- Testing on Node versions 18, 20 and 22
+- Node.js >= 20.0.0
+- Testing on Node versions 20 and 22
 
 ## Why you should use obscured
 
