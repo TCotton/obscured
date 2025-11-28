@@ -58,31 +58,6 @@ obscured.isObscured(apiKey);      // true
 obscured.isObscured('plain text'); // false
 ```
 
-### Working with Objects
-
-```typescript
-import { obscured } from 'obscured';
-
-interface Config {
-  database: string;
-  apiKey: ReturnType<typeof obscured.make>;
-  username: string;
-}
-
-const config: Config = {
-  database: 'postgres://localhost',
-  apiKey: obscured.make('secret-key'),
-  username: 'admin'
-};
-
-// Safe logging
-console.log(config); 
-// Output: { database: 'postgres://localhost', apiKey: [OBSCURED], username: 'admin' }
-
-// Access when needed
-const key = obscured.value(config.apiKey);
-```
-
 ## API
 
 ### `obscured.make<T>(value: T): Obscured<T>`
