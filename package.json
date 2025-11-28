@@ -20,6 +20,10 @@
 		"lint": "biome check .",
 		"lint:fix": "biome check --write .",
 		"format": "biome format --write .",
+		"test": "npm run test:node && npm run test:browser",
+		"test:node": "vitest run",
+		"test:browser": "vitest run --config vitest.browser.config.ts",
+		"test:watch": "vitest",
 		"prepublishOnly": "npm run build"
 	},
 	"keywords": [],
@@ -27,6 +31,10 @@
 	"license": "MIT",
 	"devDependencies": {
 		"@biomejs/biome": "^2.3.8",
-		"typescript": "^5.9.3"
+		"@vitest/browser": "^4.0.14",
+		"@vitest/browser-playwright": "^4.0.14",
+		"playwright": "^1.57.0",
+		"typescript": "^5.9.3",
+		"vitest": "^4.0.14"
 	}
 }
