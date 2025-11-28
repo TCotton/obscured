@@ -1,6 +1,6 @@
 # obscured
 
-A small TypeScript utility library for obscuring important data to prevent accidental exposure in logs. Inspired by redacted in the [Effect library](https://github.com/Effect-TS/effect).
+A small TypeScript utility library for obscuring important data to prevent accidental exposure in logs. Inspired by Redacted in the [Effect library](https://github.com/Effect-TS/effect).
 
 ## Features
 
