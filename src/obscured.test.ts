@@ -59,15 +59,15 @@ describe("obscured", () => {
 		const value3 = obscured.value(result3);
 		expect(value3).toBe("testing3");
 	});
-    it('should return true for isObscured with an obscured value', () => {
-        const result4 = obscured.make("testing4");
-        const result = obscured.isObscured(result4)
-        expect(result).toEqual(true);
-    })
-    it('should return false for isObscured with a non-obscured value', () => {
-        const result5 = obscured.make("testing5");
-        const value5 = obscured.value(result5);
-        const result = obscured.isObscured(value5)
-        expect(result).toEqual(false);
-    })
+	it("should return true for isObscured with an obscured value", () => {
+		const result4 = obscured.make("testing4");
+		const result = obscured.isObscured(result4);
+		expect(result).toEqual(true);
+	});
+	it("should return false for isObscured with a non-obscured value", () => {
+		const result5 = obscured.make("testing5");
+		const value5 = obscured.value(result5);
+		const result = obscured.isObscured(value5);
+		expect(result).toEqual(false);
+	});
 });

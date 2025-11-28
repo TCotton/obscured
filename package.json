@@ -20,6 +20,7 @@
 		"lint": "biome check .",
 		"lint:fix": "biome check --write .",
 		"format": "biome format --write .",
+		"format:check": "biome format .",
 		"test": "npm run test:node && npm run test:browser",
 		"test:node": "vitest run",
 		"test:browser": "vitest run --config vitest.browser.config.ts",
