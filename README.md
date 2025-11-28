@@ -143,9 +143,7 @@ console.log(secret.toString());  // '[OBSCURED]'
 console.log(secret.toJSON());    // '[OBSCURED]'
 ```
 
-```bash
-npm install
-```
+## Development
 
 ### Scripts
 
