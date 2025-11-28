@@ -1,6 +1,6 @@
 # obscured
 
-A smallTypeScript utility library for obscuring important data to prevent accidental exposure in logs
+A small TypeScript utility library for obscuring important data to prevent accidental exposure in logs
 
 ## Features
 
