@@ -1,0 +1,32 @@
+{
+	"name": "obscured",
+	"version": "1.0.0",
+	"description": "A TypeScript library",
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"type": "module",
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"types": "./dist/index.d.ts"
+		}
+	},
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "tsc",
+		"lint": "biome check .",
+		"lint:fix": "biome check --write .",
+		"format": "biome format --write .",
+		"prepublishOnly": "npm run build"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "MIT",
+	"devDependencies": {
+		"@biomejs/biome": "^2.3.8",
+		"typescript": "^5.9.3"
+	}
+}
