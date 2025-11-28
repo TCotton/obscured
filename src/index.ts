@@ -1,5 +1,3 @@
-/**
- * obscured library entry point
- */
-export const version = "1.0.0";
-export const testingFunction = () => "testing";
+import { obscured } from "./obscured.js";
+
+export { obscured };
