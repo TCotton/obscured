@@ -10,6 +10,7 @@ A small TypeScript utility library for obscuring important data to prevent accid
 - **Type-Safe**: Full TypeScript support with generic types
 - **Lightweight**: Minimal dependencies and small footprint
 - **Memory Efficient**: Uses WeakMap for internal storage to allow garbage collection
+- **Browser Support**: Works in both Node.js and the browser
 
 ## Installation
 
@@ -128,22 +129,6 @@ const obscuredValue = obscured.make('test');
 obscured.isObscured(obscuredValue); // true
 obscured.isObscured('plain string'); // false
 ```
-
-### `Obscured<T>` Class
-
-The underlying class can also be used directly:
-
-```typescript
-import { Obscured } from 'obscured';
-
-const secret = new Obscured('my-secret');
-const secret2 = Obscured.obscure('another-secret');
-
-console.log(secret.toString());  // '[OBSCURED]'
-console.log(secret.toJSON());    // '[OBSCURED]'
-```
-
-## Development
 
 ### Scripts
 
