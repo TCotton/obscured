@@ -130,7 +130,7 @@ obscured.isObscured(obscuredValue); // true
 obscured.isObscured('plain string'); // false
 ```
 
-### Scripts
+## Scripts
 
 - `npm run build` - Compile TypeScript to JavaScript
 - `npm run lint` - Check code with Biome
