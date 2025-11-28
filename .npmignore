@@ -1,0 +1,4 @@
+# Build artifacts not needed
+*.tsbuildinfo
+dist/**/*.test.js
+dist/**/*.test.d.ts
