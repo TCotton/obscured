@@ -105,13 +105,13 @@ export const obscured = {
 	/**
 	 * Obscures specified keys in an object by wrapping their values.
 	 * Creates a shallow copy of the object with selected properties obscured.
-	 * 
+	 *
 	 * @template T - The type of the object
 	 * @template K - The keys to obscure (must be string keys of T)
 	 * @param obj - The object containing keys to obscure
 	 * @param keys - Array of key names to obscure
 	 * @returns A new object with specified keys obscured
-	 * 
+	 *
 	 * @example
 	 * ```ts
 	 * const config = {
@@ -119,7 +119,7 @@ export const obscured = {
 	 *   apiSecret: 'secret-456',
 	 *   username: 'admin'
 	 * };
-	 * 
+	 *
 	 * const secured = obscured.obscureKeys(config, ['apiKey', 'apiSecret']);
 	 * console.log(secured.username);  // 'admin'
 	 * console.log(secured.apiKey);    // [OBSCURED]

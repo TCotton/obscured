@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {obscured, obscureKeys} from "./obscured.js";
+import { obscured, obscureKeys } from "./obscured.js";
 
 describe("obscured", () => {
 	it("should return OBSCURED with using obscured.make", () => {
@@ -161,7 +161,7 @@ describe("obscured.objectKeys", () => {
 
 		expect(result.name).toBe("app");
 		expect(result.config.toString()).toBe("[OBSCURED]");
-		
+
 		const configValue = obscured.value(result.config);
 		expect(configValue).toEqual({ apiKey: "nested-key" });
 	});
