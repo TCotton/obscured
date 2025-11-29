@@ -1,6 +1,6 @@
 {
 	"name": "obscured",
-	"version": "1.1.1",
+	"version": "1.1.2",
 	"description": "A small TypeScript library to obscure sensitive data in logs, error messages, and debugging output",
 	"main": "./dist/index.js",
 	"module": "./dist/index.js",
