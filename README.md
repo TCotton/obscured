@@ -90,6 +90,20 @@ console.log(securedConfig.apiKey);    // [OBSCURED]
 const actualKey = obscured.value(securedConfig.apiKey);  // 'secret-key-123'
 ```
 
+### Import the type
+You can also import the branded type if needed:
+```typescript
+import type { Obscured } from 'obscured';
+import { obscured } from 'obscured';
+
+const commerciallySensitiveDataObscured = obscured.make(values.commerciallySensitiveData);
+
+function doSomethingWithCommerciallySensitiveData(data: Obscured<string>): Obscured<string> {
+    return data;
+}
+```
+The above is a contrived example, but it demonstrates how you can use the Obscured type.
+
 ## API
 
 ### `obscured.make<T>(value: T): Obscured<T>`
