@@ -80,7 +80,7 @@ type EquivalentHelper<A, B> = {
 const _isEquivalent = <A, B>(
 	a: Obscured<A>,
 	b: Obscured<B>,
-): EquivalantHelper<A, B> => {
+): EquivalentHelper<A, B> => {
 	const data: { a: Obscured<A> | false; b: Obscured<B> | false } = { a, b };
 
 	const helpers: EquivalentHelper<A, B> = {
