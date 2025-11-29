@@ -235,7 +235,7 @@ describe("obscured.isEquivalent", () => {
 
 	it("should throw error when trying to obscure objects with make", () => {
 		const obj = { key: "value" };
-		// biome-ignore lint/suspicious/noExplicitAny
+		// biome-ignore lint/suspicious/noExplicitAny: any is fine here, since we're testing the error case
 		expect(() => obscured.make(obj as any)).toThrow(
 			"Cannot obscure non-primitive values. Use obscureKeys for objects.",
 		);
