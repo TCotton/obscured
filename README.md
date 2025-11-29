@@ -182,6 +182,37 @@ console.log(secured.apiSecret);      // [OBSCURED]
 const key = obscured.value(secured.apiKey);  // 'secret-key-123'
 ```
 
+### `obscured.isEquivalent<A, B>(a: Obscured<A>, b: Obscured<B>): boolean`
+
+Checks if two obscured values contain equivalent underlying values. Compares the actual values stored in the registry using strict equality (===).
+
+**Parameters:**
+- `a` - The first obscured value to compare
+- `b` - The second obscured value to compare
+
+**Returns:** `true` if both obscured values exist in the registry and contain equivalent values, `false` otherwise
+
+**Example:**
+```typescript
+const secret1 = obscured.make('password123');
+const secret2 = obscured.make('password123');
+const secret3 = obscured.make('different');
+
+obscured.isEquivalent(secret1, secret2); // true
+obscured.isEquivalent(secret1, secret3); // false
+
+// Works with different types
+const num1 = obscured.make(42);
+const num2 = obscured.make(42);
+obscured.isEquivalent(num1, num2); // true
+
+// Object comparison uses reference equality
+const obj = { key: 'value' };
+const obj1 = obscured.make(obj);
+const obj2 = obscured.make(obj);
+obscured.isEquivalent(obj1, obj2); // true (same reference)
+```
+
 ## Scripts
 
 - `npm run build` - Compile TypeScript to JavaScript
