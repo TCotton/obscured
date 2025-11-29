@@ -40,8 +40,14 @@ class ObscuredClass<T> {
 	}
 }
 
-const make = <T>(value: T): Obscured<T> =>
-	new ObscuredClass(value) as Obscured<T>;
+type Primitive = string | number | boolean | null | undefined | symbol | bigint;
+
+const make = <T extends Primitive>(value: T): Obscured<T> => {
+	if (typeof value === 'object' && value !== null) {
+		throw new TypeError('Cannot obscure non-primitive values. Use obscureKeys for objects.');
+	}
+	return new ObscuredClass(value) as Obscured<T>;
+};
 
 const value = <T>(obscured: Obscured<T>): T | undefined => {
 	if (!isObscured(obscured)) {
@@ -65,7 +71,8 @@ const obscureKeys = <
 
 	for (const key of keys) {
 		if (key in cloned) {
-			cloned[key] = make(cloned[key]);
+			// Allow objects in obscureKeys by directly creating ObscuredClass
+			cloned[key] = new ObscuredClass(cloned[key]) as Obscured<T[typeof key]>;
 		}
 	}
 
