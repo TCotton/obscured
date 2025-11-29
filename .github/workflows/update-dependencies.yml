@@ -29,7 +29,9 @@ jobs:
         run: npm ci
 
       - name: Update dependencies
-        run: npm update
+        run: |
+          npx npm-check-updates -u --target minor
+          npm install
 
       - name: Run tests to check for breaking changes
         id: run-tests
@@ -76,7 +78,7 @@ jobs:
             This PR was automatically created to update minor dependencies.
             
             ## Changes
-            - Updated dependencies using `npm update`
+            - Updated dependencies using `npm-check-updates --target minor`
             
             ${{ (steps.check-changes.outputs.package-json-changed == 'true' || steps.check-changes.outputs.package-lock-changed == 'true') && format('## Files Modified{0}{1}', 
               steps.check-changes.outputs.package-json-changed == 'true' && '\n📄 **package.json** - Dependency version ranges updated' || '', 
