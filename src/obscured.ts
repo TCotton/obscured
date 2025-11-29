@@ -73,28 +73,38 @@ const obscureKeys = <
 };
 
 type EquivalantHelper<A, B> = {
-    doesExist: (a?: Obscured<A>, b?: Obscured<B>) => EquivalantHelper<A, B>;
-    isEqual: (a?: Obscured<A>, b?: Obscured<B>) => boolean;
+	doesExist: (a?: Obscured<A>, b?: Obscured<B>) => EquivalantHelper<A, B>;
+	isEqual: (a?: Obscured<A>, b?: Obscured<B>) => boolean;
 };
 
-const _isEquivalent = <A, B>(a: Obscured<A>, b: Obscured<B>): EquivalantHelper<A, B> => {
-    const data: { a: Obscured<A> | false; b: Obscured<B> | false } = {a, b};
+const _isEquivalent = <A, B>(
+	a: Obscured<A>,
+	b: Obscured<B>,
+): EquivalantHelper<A, B> => {
+	const data: { a: Obscured<A> | false; b: Obscured<B> | false } = { a, b };
 
-    const helpers: EquivalantHelper<A, B> = {
-        doesExist: (aParam:Obscured<A> | undefined = a, bParam:Obscured<B> | undefined  = b) => {
-            data.a = registry.has(aParam) ? aParam : false;
-            data.b = registry.has(bParam) ? bParam : false;
-            return helpers;
-        },
-        isEqual: (aParam:Obscured<A> | undefined = a, bParam:Obscured<B> | undefined  = b): boolean => {
-            if (!data.a || !data.b) return false;
-            return registry.get(aParam) === registry.get(bParam);
-        },
-    };
-    return helpers;
-}
+	const helpers: EquivalantHelper<A, B> = {
+		doesExist: (
+			aParam: Obscured<A> | undefined = a,
+			bParam: Obscured<B> | undefined = b,
+		) => {
+			data.a = registry.has(aParam) ? aParam : false;
+			data.b = registry.has(bParam) ? bParam : false;
+			return helpers;
+		},
+		isEqual: (
+			aParam: Obscured<A> | undefined = a,
+			bParam: Obscured<B> | undefined = b,
+		): boolean => {
+			if (!data.a || !data.b) return false;
+			return registry.get(aParam) === registry.get(bParam);
+		},
+	};
+	return helpers;
+};
 
-const isEquivalent = <A, B>(a: Obscured<A>, b: Obscured<B>): boolean => _isEquivalent(a, b).doesExist().isEqual();
+const isEquivalent = <A, B>(a: Obscured<A>, b: Obscured<B>): boolean =>
+	_isEquivalent(a, b).doesExist().isEqual();
 
 /**
  * Utilities for creating and accessing obscured values.
@@ -159,27 +169,27 @@ export const obscured = {
 	/**
 	 * Checks if two obscured values contain equivalent underlying values.
 	 * Compares the actual values stored in the registry using strict equality (===).
-	 * 
+	 *
 	 * @template A - The type of the first obscured value
 	 * @template B - The type of the second obscured value
 	 * @param a - The first obscured value to compare
 	 * @param b - The second obscured value to compare
 	 * @returns `true` if both obscured values exist in the registry and contain equivalent values, `false` otherwise
-	 * 
+	 *
 	 * @example
 	 * ```ts
 	 * const secret1 = obscured.make('password123');
 	 * const secret2 = obscured.make('password123');
 	 * const secret3 = obscured.make('different');
-	 * 
+	 *
 	 * obscured.isEquivalent(secret1, secret2); // true
 	 * obscured.isEquivalent(secret1, secret3); // false
-	 * 
+	 *
 	 * // Works with different types
 	 * const num1 = obscured.make(42);
 	 * const num2 = obscured.make(42);
 	 * obscured.isEquivalent(num1, num2); // true
-	 * 
+	 *
 	 * // Object comparison uses reference equality
 	 * const obj = { key: 'value' };
 	 * const obj1 = obscured.make(obj);
