@@ -31,6 +31,9 @@ jobs:
       - name: Update dependencies
         run: npm update
 
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
       - name: Run tests to check for breaking changes
         id: run-tests
         continue-on-error: true
