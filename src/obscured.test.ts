@@ -151,7 +151,7 @@ describe("obscured.obscureKeys", () => {
 		expect(result.secret.toString()).toBe("[OBSCURED]");
 	});
 
-	it("should obscure nested object values", () => {
+	it("should allow obscuring nested object values via obscureKeys", () => {
 		const obj = {
 			config: {
 				apiKey: "nested-key",
@@ -233,23 +233,20 @@ describe("obscured.isEquivalent", () => {
 		expect(result).toBe(false);
 	});
 
-	it("should return true for equivalent object values (same reference check)", () => {
+	it("should throw error when trying to obscure objects with make", () => {
 		const obj = { key: "value" };
-		const value1 = obscured.make(obj);
-		const value2 = obscured.make(obj);
-
-		const result = obscured.isEquivalent(value1, value2);
-		expect(result).toBe(true);
+		// biome-ignore lint/suspicious/noExplicitAny: any is fine here, since we're testing the error case
+		expect(() => obscured.make(obj as any)).toThrow(
+			"Cannot obscure non-primitive values. Use obscureKeys for objects.",
+		);
 	});
 
-	it("should return false for different object instances with same content", () => {
-		const obj1 = { key: "value" };
-		const obj2 = { key: "value" };
-		const value1 = obscured.make(obj1);
-		const value2 = obscured.make(obj2);
-
-		const result = obscured.isEquivalent(value1, value2);
-		expect(result).toBe(false);
+	it("should throw error when trying to obscure arrays with make", () => {
+		const arr = [1, 2, 3];
+		// biome-ignore lint/suspicious/noExplicitAny: any is fine here, since we're testing the error case
+		expect(() => obscured.make(arr as any)).toThrow(
+			"Cannot obscure non-primitive values. Use obscureKeys for objects.",
+		);
 	});
 
 	it("should return false when comparing values not in registry", () => {

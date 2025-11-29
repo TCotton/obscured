@@ -106,18 +106,27 @@ The above is a contrived example, but it demonstrates how you can use the Obscur
 
 ## API
 
-### `obscured.make<T>(value: T): Obscured<T>`
+### `obscured.make<T extends Primitive>(value: T): Obscured<T>`
 
-Wraps a value in an obscured container.
+Wraps a primitive value in an obscured container. Only accepts primitive types (string, number, boolean, null, undefined, symbol, bigint).
+
+**Important:** This function only accepts primitive values. To obscure object properties, use `obscured.obscureKeys()` instead.
 
 **Parameters:**
-- `value` - The sensitive value to protect
+- `value` - The sensitive primitive value to protect
 
 **Returns:** An obscured wrapper that hides the value from serialization
+
+**Throws:** `TypeError` if a non-primitive value (object, array, etc.) is provided
 
 **Example:**
 ```typescript
 const password = obscured.make('my-password-123');
+const apiToken = obscured.make('token-xyz');
+const port = obscured.make(3000);
+
+// This will throw an error:
+// obscured.make({ secret: 'value' }); // TypeError: Cannot obscure non-primitive values
 ```
 
 ### `obscured.value<T>(obscured: Obscured<T>): T | undefined`
@@ -200,6 +209,11 @@ const secret3 = obscured.make('different');
 
 obscured.isEquivalent(secret1, secret2); // true
 obscured.isEquivalent(secret1, secret3); // false
+
+// Works with different primitive types
+const num1 = obscured.make(42);
+const num2 = obscured.make(42);
+obscured.isEquivalent(num1, num2); // true
 ```
 
 ## Scripts
