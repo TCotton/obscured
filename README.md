@@ -60,6 +60,36 @@ obscured.isObscured(apiKey);      // true
 obscured.isObscured('plain text'); // false
 ```
 
+### Working with Objects
+
+```typescript
+import { obscured } from 'obscured';
+
+// Obscure specific keys in an object
+const config = {
+  database: 'postgres://localhost',
+  apiKey: 'secret-key-123',
+  apiSecret: 'secret-456',
+  username: 'admin'
+};
+
+const securedConfig = obscured.obscureKeys(config, ['apiKey', 'apiSecret'] as const);
+
+// Safe logging - sensitive keys are obscured
+console.log(securedConfig);
+// Output: { database: 'postgres://localhost', apiKey: [OBSCURED], apiSecret: [OBSCURED], username: 'admin' }
+
+// Non-sensitive values remain accessible
+console.log(securedConfig.username);  // 'admin'
+console.log(securedConfig.database);  // 'postgres://localhost'
+
+// Sensitive values are obscured
+console.log(securedConfig.apiKey);    // [OBSCURED]
+
+// Retrieve actual values when needed
+const actualKey = obscured.value(securedConfig.apiKey);  // 'secret-key-123'
+```
+
 ## API
 
 ### `obscured.make<T>(value: T): Obscured<T>`
@@ -108,6 +138,34 @@ Checks if a value is an obscured instance.
 const obscuredValue = obscured.make('test');
 obscured.isObscured(obscuredValue); // true
 obscured.isObscured('plain string'); // false
+```
+
+### `obscured.obscureKeys<T, K>(obj: T, keys: readonly K[]): T & { [P in K]: Obscured<T[P]> }`
+
+Obscures specified keys in an object by wrapping their values. Creates a shallow copy of the object with selected properties obscured.
+
+**Parameters:**
+- `obj` - The object containing keys to obscure
+- `keys` - Array of key names to obscure
+
+**Returns:** A new object with specified keys obscured
+
+**Example:**
+```typescript
+const config = {
+  apiKey: 'secret-key-123',
+  apiSecret: 'secret-456',
+  username: 'admin'
+};
+
+const secured = obscured.obscureKeys(config, ['apiKey', 'apiSecret'] as const);
+
+console.log(secured.username);       // 'admin'
+console.log(secured.apiKey);         // [OBSCURED]
+console.log(secured.apiSecret);      // [OBSCURED]
+
+// Retrieve original values when needed
+const key = obscured.value(secured.apiKey);  // 'secret-key-123'
 ```
 
 ## Scripts

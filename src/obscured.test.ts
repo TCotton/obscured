@@ -75,3 +75,94 @@ describe("obscured", () => {
 		expect(result).toEqual(false);
 	});
 });
+
+describe("obscured.obscureKeys", () => {
+	it("should obscure specified keys in an object", () => {
+		const obj = {
+			username: "john_doe",
+			password: "secret123",
+			email: "john@example.com",
+		};
+
+		const result = obscured.obscureKeys(obj, ["password"] as const);
+
+		expect(result.username).toBe("john_doe");
+		expect(result.email).toBe("john@example.com");
+		expect(result.password.toString()).toBe("[OBSCURED]");
+		expect(result.password.toJSON()).toBe("[OBSCURED]");
+		expect(obscured.isObscured(result.password)).toBe(true);
+	});
+
+	it("should obscure multiple keys in an object", () => {
+		const obj = {
+			apiKey: "key123",
+			apiSecret: "secret456",
+			username: "admin",
+		};
+
+		const result = obscured.obscureKeys(obj, ["apiKey", "apiSecret"] as const);
+
+		expect(result.username).toBe("admin");
+		expect(result.apiKey.toString()).toBe("[OBSCURED]");
+		expect(result.apiSecret.toString()).toBe("[OBSCURED]");
+		expect(obscured.isObscured(result.apiKey)).toBe(true);
+		expect(obscured.isObscured(result.apiSecret)).toBe(true);
+	});
+
+	it("should retrieve obscured values using obscured.value", () => {
+		const obj = {
+			token: "bearer-token-xyz",
+			userId: "12345",
+		};
+
+		const result = obscured.obscureKeys(obj, ["token"] as const);
+
+		expect(result.userId).toBe("12345");
+		expect(result.token.toString()).toBe("[OBSCURED]");
+
+		const tokenValue = obscured.value(result.token);
+		expect(tokenValue).toBe("bearer-token-xyz");
+	});
+
+	it("should handle empty keys array", () => {
+		const obj = {
+			username: "test",
+			password: "pass",
+		};
+
+		const result = obscured.obscureKeys(obj, [] as const);
+
+		expect(result.username).toBe("test");
+		expect(result.password).toBe("pass");
+	});
+
+	it("should not modify original object", () => {
+		const obj = {
+			secret: "original",
+			public: "data",
+		};
+
+		const result = obscured.obscureKeys(obj, ["secret"] as const);
+
+		expect(obj.secret).toBe("original");
+		expect(obj.public).toBe("data");
+		expect(result.secret.toString()).toBe("[OBSCURED]");
+	});
+
+	it("should obscure nested object values", () => {
+		const obj = {
+			config: {
+				apiKey: "nested-key",
+			},
+			name: "app",
+		};
+
+		const result = obscured.obscureKeys(obj, ["config"] as const);
+
+		expect(result.name).toBe("app");
+		expect(result.config.toString()).toBe("[OBSCURED]");
+
+		const configValue = obscured.value(result.config);
+		expect(configValue).toEqual({ apiKey: "nested-key" });
+	});
+});

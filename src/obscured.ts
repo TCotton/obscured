@@ -52,6 +52,25 @@ const value = <T>(obscured: Obscured<T>): T | undefined => {
 const isObscured = (value: unknown): value is Obscured<unknown> =>
 	value instanceof Obscured;
 
+const obscureKeys = <
+	T extends Record<string, unknown>,
+	K extends keyof T & string,
+>(
+	obj: T,
+	keys: readonly K[],
+): T & { [P in K]: Obscured<T[P]> } => {
+	// biome-ignore lint/suspicious/noExplicitAny: WeakMap requires type flexibility for generic storage
+	const cloned: any = { ...obj };
+
+	for (const key of keys) {
+		if (key in cloned) {
+			cloned[key] = make(cloned[key]);
+		}
+	}
+
+	return cloned;
+};
+
 /**
  * Utilities for creating and accessing obscured values.
  * Obscured values hide sensitive data from serialization/logging while
@@ -87,4 +106,29 @@ export const obscured = {
 	 * @returns True if the value is obscured, false otherwise
 	 */
 	isObscured,
+	/**
+	 * Obscures specified keys in an object by wrapping their values.
+	 * Creates a shallow copy of the object with selected properties obscured.
+	 *
+	 * @template T - The type of the object
+	 * @template K - The keys to obscure (must be string keys of T)
+	 * @param obj - The object containing keys to obscure
+	 * @param keys - Array of key names to obscure
+	 * @returns A new object with specified keys obscured
+	 *
+	 * @example
+	 * ```ts
+	 * const config = {
+	 *   apiKey: 'secret-key-123',
+	 *   apiSecret: 'secret-456',
+	 *   username: 'admin'
+	 * };
+	 *
+	 * const secured = obscured.obscureKeys(config, ['apiKey', 'apiSecret']);
+	 * console.log(secured.username);  // 'admin'
+	 * console.log(secured.apiKey);    // [OBSCURED]
+	 * obscured.value(secured.apiKey); // 'secret-key-123'
+	 * ```
+	 */
+	obscureKeys,
 };
