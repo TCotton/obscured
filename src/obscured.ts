@@ -43,8 +43,10 @@ class ObscuredClass<T> {
 type Primitive = string | number | boolean | null | undefined | symbol | bigint;
 
 const make = <T extends Primitive>(value: T): Obscured<T> => {
-	if (typeof value === 'object' && value !== null) {
-		throw new TypeError('Cannot obscure non-primitive values. Use obscureKeys for objects.');
+	if (typeof value === "object" && value !== null) {
+		throw new TypeError(
+			"Cannot obscure non-primitive values. Use obscureKeys for objects.",
+		);
 	}
 	return new ObscuredClass(value) as Obscured<T>;
 };
