@@ -90,8 +90,8 @@ console.log(securedConfig.apiKey);    // [OBSCURED]
 const actualKey = obscured.value(securedConfig.apiKey);  // 'secret-key-123'
 ```
 
-### Export the type
-You can also export the branded type if needed:
+### Import the type
+You can also import the branded type if needed:
 ```typescript
 import type { Obscured } from 'obscured';
 import { obscured} from 'obscured';
