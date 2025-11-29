@@ -1,6 +1,6 @@
 {
 	"name": "obscured",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"description": "A small TypeScript library to obscure sensitive data in logs, error messages, and debugging output",
 	"main": "./dist/index.js",
 	"module": "./dist/index.js",
@@ -35,6 +35,10 @@
 	],
 	"author": "",
 	"license": "MIT",
+	"engines": {
+		"node": ">=20"
+	},
+	"repository": "https://github.com/TCotton/obscured/",
 	"devDependencies": {
 		"@biomejs/biome": "^2.3.8",
 		"@vitest/browser": "^4.0.14",

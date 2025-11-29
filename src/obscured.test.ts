@@ -16,6 +16,10 @@ describe("obscured", () => {
 		const value = obscured.value(result);
 		expect(value).toBe("testing");
 	});
+	it("should return undefined when calling value on a non-obscured value", () => {
+		const result = obscured.value("not obscured" as any);
+		expect(result).toBeUndefined();
+	});
 	it("should return OBSCURED with multiple strings using obscured.make", () => {
 		const result1 = obscured.make("testing1");
 		const result2 = obscured.make("testing2");

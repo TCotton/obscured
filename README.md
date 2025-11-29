@@ -40,8 +40,10 @@ Sensitive data like API keys, passwords, tokens, and personal information can ea
 ```typescript
 import { obscured } from 'obscured';
 
+const apiKeyValue = process.env.API_KEY;
+
 // Create an obscured value
-const apiKey = obscured.make('secret-api-key-12345');
+const apiKey = obscured.make(apiKeyValue);
 
 // Safe to log - shows [OBSCURED]
 console.log(apiKey);              // Output: [OBSCURED]
@@ -74,19 +76,22 @@ Wraps a value in an obscured container.
 const password = obscured.make('my-password-123');
 ```
 
-### `obscured.value<T>(obscured: Obscured<T>): T`
+### `obscured.value<T>(obscured: Obscured<T>): T | undefined`
 
 Extracts the underlying value from an obscured container.
 
 **Parameters:**
 - `obscured` - The obscured container
 
-**Returns:** The original unwrapped value
+**Returns:** The original unwrapped value, or `undefined` if the value is not an obscured instance
 
 **Example:**
 ```typescript
 const secret = obscured.make('hidden');
 const revealed = obscured.value(secret); // 'hidden'
+
+// Returns undefined for non-obscured values
+const notObscured = obscured.value('plain string' as any); // undefined
 ```
 
 ### `obscured.isObscured(value: unknown): value is Obscured<unknown>`
