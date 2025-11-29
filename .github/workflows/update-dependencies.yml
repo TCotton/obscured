@@ -78,9 +78,9 @@ jobs:
             ## Changes
             - Updated dependencies using `npm update`
             
-            ${{ (steps.check-changes.outputs.package-json-changed == 'true' || steps.check-changes.outputs.package-lock-changed == 'true') && format('## Files Modified{0}{1}', 
-              steps.check-changes.outputs.package-json-changed == 'true' && '\n📄 **package.json** - Dependency version ranges updated' || '', 
-              steps.check-changes.outputs.package-lock-changed == 'true' && '\n🔒 **package-lock.json** - Exact dependency versions locked' || '') || '' }}
+            ${{ (steps.check-changes.outputs.package-json-changed == 'true' || steps.check-changes.outputs.package-lock-changed == 'true') && '## Files Modified' || '' }}
+            ${{ steps.check-changes.outputs.package-json-changed == 'true' && '📄 **package.json** - Dependency version ranges updated' || '' }}
+            ${{ steps.check-changes.outputs.package-lock-changed == 'true' && '🔒 **package-lock.json** - Exact dependency versions locked' || '' }}
             ## Test Results
             ${{ steps.run-tests.outcome == 'success' && '✅ All tests are passing' || '❌ **WARNING: Tests are failing after dependency updates**' }}
             
