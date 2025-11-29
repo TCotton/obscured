@@ -200,17 +200,6 @@ const secret3 = obscured.make('different');
 
 obscured.isEquivalent(secret1, secret2); // true
 obscured.isEquivalent(secret1, secret3); // false
-
-// Works with different types
-const num1 = obscured.make(42);
-const num2 = obscured.make(42);
-obscured.isEquivalent(num1, num2); // true
-
-// Object comparison uses reference equality
-const obj = { key: 'value' };
-const obj1 = obscured.make(obj);
-const obj2 = obscured.make(obj);
-obscured.isEquivalent(obj1, obj2); // true (same reference)
 ```
 
 ## Scripts
