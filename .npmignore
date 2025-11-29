@@ -2,3 +2,4 @@
 *.tsbuildinfo
 dist/**/*.test.js
 dist/**/*.test.d.ts
+test/**/*.js
