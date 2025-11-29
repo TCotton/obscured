@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import type { Obscured } from "./index.js";
 import { obscured } from "./index.js";
 
 describe("obscured", () => {
@@ -165,5 +166,97 @@ describe("obscured.obscureKeys", () => {
 
 		const configValue = obscured.value(result.config);
 		expect(configValue).toEqual({ apiKey: "nested-key" });
+	});
+});
+
+describe("obscured.isEquivalent", () => {
+	it("should return true when two obscured values contain the same value", () => {
+		const value1 = obscured.make("secret123");
+		const value2 = obscured.make("secret123");
+
+		const result = obscured.isEquivalent(value1, value2);
+		expect(result).toBe(true);
+	});
+
+	it("should return false when two obscured values contain different values", () => {
+		const value1 = obscured.make("secret123");
+		const value2 = obscured.make("secret456");
+
+		const result = obscured.isEquivalent(value1, value2);
+		expect(result).toBe(false);
+	});
+
+	it("should return true when comparing the same obscured instance", () => {
+		const value1 = obscured.make("secret123");
+
+		const result = obscured.isEquivalent(value1, value1);
+		expect(result).toBe(true);
+	});
+
+	it("should return true for equivalent number values", () => {
+		const value1 = obscured.make(42);
+		const value2 = obscured.make(42);
+
+		const result = obscured.isEquivalent(value1, value2);
+		expect(result).toBe(true);
+	});
+
+	it("should return false for different number values", () => {
+		const value1 = obscured.make(42);
+		const value2 = obscured.make(99);
+
+		const result = obscured.isEquivalent(value1, value2);
+		expect(result).toBe(false);
+	});
+
+	it("should return true for equivalent boolean values", () => {
+		const value1 = obscured.make(true);
+		const value2 = obscured.make(true);
+
+		const result = obscured.isEquivalent(value1, value2);
+		expect(result).toBe(true);
+	});
+
+	it("should return false for different boolean values", () => {
+		const value1 = obscured.make(true);
+		const value2 = obscured.make(false);
+
+		const result = obscured.isEquivalent(value1, value2);
+		expect(result).toBe(false);
+	});
+
+	it("should return false when comparing different types with same string representation", () => {
+		const value1 = obscured.make("123");
+		const value2 = obscured.make(123);
+
+		const result = obscured.isEquivalent(value1, value2);
+		expect(result).toBe(false);
+	});
+
+	it("should return true for equivalent object values (same reference check)", () => {
+		const obj = { key: "value" };
+		const value1 = obscured.make(obj);
+		const value2 = obscured.make(obj);
+
+		const result = obscured.isEquivalent(value1, value2);
+		expect(result).toBe(true);
+	});
+
+	it("should return false for different object instances with same content", () => {
+		const obj1 = { key: "value" };
+		const obj2 = { key: "value" };
+		const value1 = obscured.make(obj1);
+		const value2 = obscured.make(obj2);
+
+		const result = obscured.isEquivalent(value1, value2);
+		expect(result).toBe(false);
+	});
+
+	it("should return false when comparing values not in registry", () => {
+		const fakeObscured = {} as Obscured<string>;
+		const value = obscured.make("test");
+
+		const result = obscured.isEquivalent(fakeObscured, value);
+		expect(result).toBe(false);
 	});
 });

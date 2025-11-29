@@ -72,6 +72,11 @@ const obscureKeys = <
 	return cloned;
 };
 
+const isEquivalent = <A, B>(a: Obscured<A>, b: Obscured<B>): boolean => {
+	if (!registry.has(a) || !registry.has(b)) return false;
+	return registry.get(a) === registry.get(b);
+};
+
 /**
  * Utilities for creating and accessing obscured values.
  * Obscured values hide sensitive data from serialization/logging while
@@ -132,4 +137,36 @@ export const obscured = {
 	 * ```
 	 */
 	obscureKeys,
+	/**
+	 * Checks if two obscured values contain equivalent underlying values.
+	 * Compares the actual values stored in the registry using strict equality (===).
+	 *
+	 * @template A - The type of the first obscured value
+	 * @template B - The type of the second obscured value
+	 * @param a - The first obscured value to compare
+	 * @param b - The second obscured value to compare
+	 * @returns `true` if both obscured values exist in the registry and contain equivalent values, `false` otherwise
+	 *
+	 * @example
+	 * ```ts
+	 * const secret1 = obscured.make('password123');
+	 * const secret2 = obscured.make('password123');
+	 * const secret3 = obscured.make('different');
+	 *
+	 * obscured.isEquivalent(secret1, secret2); // true
+	 * obscured.isEquivalent(secret1, secret3); // false
+	 *
+	 * // Works with different types
+	 * const num1 = obscured.make(42);
+	 * const num2 = obscured.make(42);
+	 * obscured.isEquivalent(num1, num2); // true
+	 *
+	 * // Object comparison uses reference equality
+	 * const obj = { key: 'value' };
+	 * const obj1 = obscured.make(obj);
+	 * const obj2 = obscured.make(obj);
+	 * obscured.isEquivalent(obj1, obj2); // true (same reference)
+	 * ```
+	 */
+	isEquivalent,
 };
