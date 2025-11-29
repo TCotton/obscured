@@ -43,9 +43,9 @@ const make = <T>(value: T) => {
 };
 
 const value = <T>(obscured: Obscured<T>): T | undefined => {
-    if (!isObscured(obscured)) {
-        return undefined
-    }
+	if (!isObscured(obscured)) {
+		return undefined;
+	}
 	return registry.get(obscured) as T;
 };
 
