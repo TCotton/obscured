@@ -1,0 +1,106 @@
+name: Update Minor Dependencies
+
+on:
+  schedule:
+    # Run every Monday at 9:00 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  update-dependencies:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install current dependencies
+        run: npm ci
+
+      - name: Update dependencies
+        run: npm update
+
+      - name: Run tests to check for breaking changes
+        id: run-tests
+        continue-on-error: true
+        run: npm test
+
+      - name: Get current timestamp
+        id: timestamp
+        run: echo "date=$(date +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_OUTPUT
+
+      - name: Check for changes in package files
+        id: check-changes
+        run: |
+          if git diff --exit-code package.json package-lock.json; then
+            echo "changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "changes=true" >> $GITHUB_OUTPUT
+          fi
+          
+          # Check which files changed for detailed reporting
+          if git diff --exit-code package.json >/dev/null 2>&1; then
+            echo "package-json-changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "package-json-changed=true" >> $GITHUB_OUTPUT
+          fi
+          
+          if git diff --exit-code package-lock.json >/dev/null 2>&1; then
+            echo "package-lock-changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "package-lock-changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Pull Request
+        if: steps.check-changes.outputs.changes == 'true'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'chore: update minor dependencies'
+          title: >-
+            ${{ steps.run-tests.outcome == 'failure' && 
+            'chore: update minor dependencies ⚠️ TESTS FAILING' || 
+            'chore: update minor dependencies' }}
+          body: |
+            This PR was automatically created to update minor dependencies.
+            
+            ## Changes
+            - Updated dependencies using `npm update`
+            
+            ${{ (steps.check-changes.outputs.package-json-changed == 'true' || steps.check-changes.outputs.package-lock-changed == 'true') && format('## Files Modified{0}{1}', 
+              steps.check-changes.outputs.package-json-changed == 'true' && '\n📄 **package.json** - Dependency version ranges updated' || '', 
+              steps.check-changes.outputs.package-lock-changed == 'true' && '\n🔒 **package-lock.json** - Exact dependency versions locked' || '') || '' }}
+            ## Test Results
+            ${{ steps.run-tests.outcome == 'success' && '✅ All tests are passing' || '❌ **WARNING: Tests are failing after dependency updates**' }}
+            
+            ${{ steps.run-tests.outcome == 'failure' && '**⚠️ BREAKING CHANGES DETECTED**
+            
+            The dependency updates have caused test failures. Please review the changes carefully:
+            1. Check the test output in the workflow run
+            2. Review the updated dependencies in both `package.json` and `package-lock.json`
+            3. Fix any breaking changes before merging
+            4. Consider pinning problematic dependencies if needed
+            
+            **DO NOT MERGE** until tests are fixed or breaking changes are intentionally accepted.' || '' }}
+            
+            ## Verification
+            ${{ steps.run-tests.outcome == 'success' && 'The automated tests have been run and are passing. Please review the changes in both `package.json` and `package-lock.json` to ensure the updates are appropriate.' || 'Manual testing and review required due to test failures.' }}
+            
+            Auto-generated on: ${{ steps.timestamp.outputs.date }}
+          branch: update-dependencies-${{ github.run_number }}
+          delete-branch: true
+          labels: >-
+            ${{ steps.run-tests.outcome == 'failure' && 
+            'dependencies,automated,breaking-changes' || 
+            'dependencies,automated' }}
