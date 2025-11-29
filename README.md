@@ -35,6 +35,9 @@ Sensitive data like API keys, passwords, tokens, and personal information can ea
 
 **Important:** This library prevents *accidental* exposure only. It does not provide cryptographic security or protect against intentional access to memory.
 
+**Important:** Do not rely on this library for secure secret management or to prevent deliberate access.
+- Use in conjunction with other security best practices for handling secrets.
+
 ## Usage
 
 ```typescript
