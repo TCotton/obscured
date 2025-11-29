@@ -241,6 +241,14 @@ describe("obscured.isEquivalent", () => {
 		);
 	});
 
+	it("should throw error when trying to obscure arrays with make", () => {
+		const arr = [1, 2, 3];
+		// biome-ignore lint/suspicious/noExplicitAny: any is fine here, since we're testing the error case
+		expect(() => obscured.make(arr as any)).toThrow(
+			"Cannot obscure non-primitive values. Use obscureKeys for objects.",
+		);
+	});
+
 	it("should return false when comparing values not in registry", () => {
 		const fakeObscured = {} as Obscured<string>;
 		const value = obscured.make("test");
