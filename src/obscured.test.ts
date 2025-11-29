@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { obscured } from "./obscured.js";
+import { obscured } from "./index.js";
 
 describe("obscured", () => {
 	it("should return OBSCURED with using obscured.make", () => {
@@ -17,6 +17,7 @@ describe("obscured", () => {
 		expect(value).toBe("testing");
 	});
 	it("should return undefined when calling value on a non-obscured value", () => {
+		// biome-ignore lint/suspicious/noExplicitAny: WeakMap requires type flexibility for generic storage
 		const result = obscured.value("not obscured" as any);
 		expect(result).toBeUndefined();
 	});
