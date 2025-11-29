@@ -93,8 +93,8 @@ const _isEquivalent = <A, B>(
 			return helpers;
 		},
 		isEqual: (
-			aParam: Obscured<A> | undefined = a,
-			bParam: Obscured<B> | undefined = b,
+			aParam: Obscured<A> = a,
+			bParam: Obscured<B> = b,
 		): boolean => {
 			if (!data.a || !data.b) return false;
 			return registry.get(aParam) === registry.get(bParam);
