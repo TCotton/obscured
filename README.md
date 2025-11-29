@@ -96,7 +96,7 @@ You can also export the branded type if needed:
 import type { Obscured } from 'obscured';
 import { obscured} from 'obscured';
 
-const commerciallySensitiveDataData = obscured.make(values.commerciallySensitiveDataData);
+const commerciallySensitiveDataObscured = obscured.make(values.commerciallySensitiveData);
 
 function doSomethingWithCommerciallySensitiveDataData(data: Obscured<string>): Obscured<string>  {
     return data;
