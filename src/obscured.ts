@@ -18,29 +18,30 @@ const registry = new WeakMap<Obscured<any>, any>();
  *   - Use in conjunction with other security best practices for handling secrets.
  */
 
-export class Obscured<T> {
+declare const ObscuredBrand: unique symbol;
+
+export type Obscured<T> = ObscuredClass<T> & { readonly [ObscuredBrand]: T };
+
+class ObscuredClass<T> {
 	static readonly PLACEHOLDER = "[OBSCURED]";
+	declare readonly [ObscuredBrand]: T;
 
 	constructor(value: T) {
 		registry.set(this, value);
 	}
-	static obscure<T>(value: T): Obscured<T> {
-		return new Obscured(value);
-	}
 	toString(): string {
-		return Obscured.PLACEHOLDER;
+		return ObscuredClass.PLACEHOLDER;
 	}
 	toJSON(): string {
-		return Obscured.PLACEHOLDER;
+		return ObscuredClass.PLACEHOLDER;
 	}
 	[INSPECT_SYMBOL](): string {
-		return Obscured.PLACEHOLDER;
+		return ObscuredClass.PLACEHOLDER;
 	}
 }
 
-const make = <T>(value: T) => {
-	return Obscured.obscure(value);
-};
+const make = <T>(value: T): Obscured<T> =>
+	new ObscuredClass(value) as Obscured<T>;
 
 const value = <T>(obscured: Obscured<T>): T | undefined => {
 	if (!isObscured(obscured)) {
@@ -50,7 +51,7 @@ const value = <T>(obscured: Obscured<T>): T | undefined => {
 };
 
 const isObscured = (value: unknown): value is Obscured<unknown> =>
-	value instanceof Obscured;
+	value instanceof ObscuredClass;
 
 const obscureKeys = <
 	T extends Record<string, unknown>,
