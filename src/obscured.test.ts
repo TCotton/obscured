@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { obscured, obscureKeys } from "./obscured.js";
+import { obscured } from "./obscured.js";
 
 describe("obscured", () => {
 	it("should return OBSCURED with using obscured.make", () => {
@@ -76,7 +76,7 @@ describe("obscured", () => {
 	});
 });
 
-describe("obscured.objectKeys", () => {
+describe("obscured.obscureKeys", () => {
 	it("should obscure specified keys in an object", () => {
 		const obj = {
 			username: "john_doe",

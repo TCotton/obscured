@@ -52,14 +52,14 @@ const value = <T>(obscured: Obscured<T>): T | undefined => {
 const isObscured = (value: unknown): value is Obscured<unknown> =>
 	value instanceof Obscured;
 
-export const obscureKeys = <
+const obscureKeys = <
 	T extends Record<string, unknown>,
 	K extends keyof T & string,
 >(
 	obj: T,
 	keys: readonly K[],
 ): T & { [P in K]: Obscured<T[P]> } => {
-    // biome-ignore lint/suspicious/noExplicitAny: WeakMap requires type flexibility for generic storage
+	// biome-ignore lint/suspicious/noExplicitAny: WeakMap requires type flexibility for generic storage
 	const cloned: any = { ...obj };
 
 	for (const key of keys) {
