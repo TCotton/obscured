@@ -72,39 +72,10 @@ const obscureKeys = <
 	return cloned;
 };
 
-type EquivalentHelper<A, B> = {
-	doesExist: (a?: Obscured<A>, b?: Obscured<B>) => EquivalentHelper<A, B>;
-	isEqual: (a?: Obscured<A>, b?: Obscured<B>) => boolean;
+const isEquivalent = <A, B>(a: Obscured<A>, b: Obscured<B>): boolean => {
+	if (!registry.has(a) || !registry.has(b)) return false;
+	return registry.get(a) === registry.get(b);
 };
-
-const _isEquivalent = <A, B>(
-	a: Obscured<A>,
-	b: Obscured<B>,
-): EquivalentHelper<A, B> => {
-	const data: { a: Obscured<A> | false; b: Obscured<B> | false } = { a, b };
-
-	const helpers: EquivalentHelper<A, B> = {
-		doesExist: (
-			aParam: Obscured<A> | undefined = a,
-			bParam: Obscured<B> | undefined = b,
-		) => {
-			data.a = registry.has(aParam) ? aParam : false;
-			data.b = registry.has(bParam) ? bParam : false;
-			return helpers;
-		},
-		isEqual: (
-			aParam: Obscured<A> = a,
-			bParam: Obscured<B> = b,
-		): boolean => {
-			if (!data.a || !data.b) return false;
-			return registry.get(aParam) === registry.get(bParam);
-		},
-	};
-	return helpers;
-};
-
-const isEquivalent = <A, B>(a: Obscured<A>, b: Obscured<B>): boolean =>
-	_isEquivalent(a, b).doesExist().isEqual();
 
 /**
  * Utilities for creating and accessing obscured values.

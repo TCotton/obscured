@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import type { Obscured } from "./index.js";
 import { obscured } from "./index.js";
 
 describe("obscured", () => {
@@ -248,6 +249,14 @@ describe("obscured.isEquivalent", () => {
 		const value2 = obscured.make(obj2);
 
 		const result = obscured.isEquivalent(value1, value2);
+		expect(result).toBe(false);
+	});
+
+	it("should return false when comparing values not in registry", () => {
+		const fakeObscured = {} as Obscured<string>;
+		const value = obscured.make("test");
+
+		const result = obscured.isEquivalent(fakeObscured, value);
 		expect(result).toBe(false);
 	});
 });
