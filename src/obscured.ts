@@ -72,8 +72,8 @@ const obscureKeys = <
 	return cloned;
 };
 
-type EquivalantHelper<A, B> = {
-	doesExist: (a?: Obscured<A>, b?: Obscured<B>) => EquivalantHelper<A, B>;
+type EquivalentHelper<A, B> = {
+	doesExist: (a?: Obscured<A>, b?: Obscured<B>) => EquivalentHelper<A, B>;
 	isEqual: (a?: Obscured<A>, b?: Obscured<B>) => boolean;
 };
 
@@ -83,7 +83,7 @@ const _isEquivalent = <A, B>(
 ): EquivalantHelper<A, B> => {
 	const data: { a: Obscured<A> | false; b: Obscured<B> | false } = { a, b };
 
-	const helpers: EquivalantHelper<A, B> = {
+	const helpers: EquivalentHelper<A, B> = {
 		doesExist: (
 			aParam: Obscured<A> | undefined = a,
 			bParam: Obscured<B> | undefined = b,
