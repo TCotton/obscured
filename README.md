@@ -33,7 +33,7 @@ Sensitive data like API keys, passwords, tokens, and personal information can ea
 - Ensuring compliance with data protection requirements
 - Protecting user PII in development environments
 
-**Important:** This library prevents *accidental* exposure only. It does not provide cryptographic security, nor does it protect against intentional or deliberate access to memory. Do not rely on this library for secure secret management—always use in conjunction with other security best practices for handling secrets.
+**Important:** This library prevents *accidental* exposure only. It does not provide cryptographic security, nor does it protect against intentional or deliberate access to memory. Do not rely on this library for secure secret management - always use in conjunction with other security best practices for handling secrets.
 
 ## Usage
 
