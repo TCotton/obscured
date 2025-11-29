@@ -73,7 +73,7 @@ const config = {
   username: 'admin'
 };
 
-const securedConfig = obscured.obscureKeys(config, ['apiKey', 'apiSecret']);
+const securedConfig = obscured.obscureKeys(config, ['apiKey', 'apiSecret'] as const);
 
 // Safe logging - sensitive keys are obscured
 console.log(securedConfig);
@@ -158,7 +158,7 @@ const config = {
   username: 'admin'
 };
 
-const secured = obscured.obscureKeys(config, ['apiKey', 'apiSecret']);
+const secured = obscured.obscureKeys(config, ['apiKey', 'apiSecret'] as const);
 
 console.log(secured.username);       // 'admin'
 console.log(secured.apiKey);         // [OBSCURED]
