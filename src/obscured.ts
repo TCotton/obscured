@@ -2,6 +2,10 @@ const INSPECT_SYMBOL = Symbol.for("nodejs.util.inspect.custom");
 // biome-ignore lint/suspicious/noExplicitAny: WeakMap requires type flexibility for generic storage
 const registry = new WeakMap<Obscured<any>, any>();
 
+declare const ObscuredBrand: unique symbol;
+
+export type Obscured<T> = ObscuredClass<T> & { readonly [ObscuredBrand]: T };
+
 /**
  * Represents a value intentionally obscured to prevent accidental exposure
  * via stringification, JSON serialization, or inspection (e.g., in logs or debugging tools).
@@ -9,6 +13,7 @@ const registry = new WeakMap<Obscured<any>, any>();
  * Usage:
  *   - To obscure a sensitive value, use `Obscured.obscure(value)` or `obscured.make(value)`.
  *   - To retrieve the original value, use `obscured.value(obscuredInstance)`.
+ *   - These are the factory functions for creating and accessing obscured values.
  *
  * Security considerations:
  *   - This class prevents accidental exposure of sensitive values, but does not provide
@@ -17,10 +22,6 @@ const registry = new WeakMap<Obscured<any>, any>();
  *   - Do not rely on this class for secure secret management or to prevent deliberate access.
  *   - Use in conjunction with other security best practices for handling secrets.
  */
-
-declare const ObscuredBrand: unique symbol;
-
-export type Obscured<T> = ObscuredClass<T> & { readonly [ObscuredBrand]: T };
 
 class ObscuredClass<T> {
 	static readonly PLACEHOLDER = "[OBSCURED]";
@@ -98,6 +99,7 @@ const isEquivalent = <A, B>(a: Obscured<A>, b: Obscured<B>): boolean => {
  * JSON.stringify(secret);     // '"[OBSCURED]"'
  * obscured.value(secret);     // 'api-key-123'
  * obscured.isObscured(secret); // true
+ * obscured.isEquivalent(obscured.make('api-key-123'), obscured.make('api-key-456')) // false
  * ```
  */
 export const obscured = {
