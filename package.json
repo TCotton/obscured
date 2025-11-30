@@ -24,7 +24,7 @@
 		"test": "npm run test:node && npm run test:browser && npm run test:bun",
 		"test:node": "vitest run",
 		"test:browser": "vitest run --config vitest.browser.config.ts",
-		"test:bun": "bun --bun vitest run --config vitest.bun.config.ts || echo 'Bun not installed, skipping Bun tests'",
+		"test:bun": "command -v bun > /dev/null 2>&1 && bun --bun vitest run --config vitest.bun.config.ts || echo 'Bun not installed, skipping Bun tests'",
 		"test:watch": "vitest",
 		"prepublishOnly": "npm run build"
 	},
