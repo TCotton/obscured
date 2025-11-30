@@ -21,6 +21,8 @@ npm install obscured
 ## Requirements
 - Node.js >= 20.0.0
 - Testing on Node versions 20 and 22
+- Testing on browser: Chromium headless
+- Testing on Bun 1.3.3
 
 ## Why you should use obscured
 
