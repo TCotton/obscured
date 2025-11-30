@@ -101,6 +101,17 @@ const commerciallySensitiveDataObscured = obscured.make(values.commerciallySensi
 function doSomethingWithCommerciallySensitiveData(data: Obscured<string>): Obscured<string> {
     return data;
 }
+
+const config = {
+    apiKey: 'secret-key-123',
+    apiSecret: 'secret-456',
+    username: 'admin'
+}
+const secured = obscured.obscureKeys(config, ['apiKey', 'apiSecret'] as const)
+
+doSomethingWithCommerciallySensitiveData(secured.apiKey) // TypeScript pass
+doSomethingWithCommerciallySensitiveData(secured.username) // TypeScript error (username is not obscured)
+
 ```
 The above is a contrived example, but it demonstrates how you can use the Obscured type.
 
