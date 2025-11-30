@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.2] - 2025-11-30
+
+### Added
+- Bun runtime support for running tests
+  - New `test:bun` script to run tests with Bun's runtime
+  - Created `vitest.bun.config.ts` configuration file
+  - Tests now run in three JavaScript runtimes: Node.js, Browser (Chromium), and Bun
+  - Graceful fallback if Bun is not installed (won't break CI/CD)
+- GitHub Actions workflow now installs and uses Bun
+  - Added `oven-sh/setup-bun@v2` action to CI/CD pipeline
+  - Ensures Bun tests run in both test and publish jobs
+
+### Changed
+- Updated main `test` script to include all three test environments: `npm run test:node && npm run test:browser && npm run test:bun`
+- Enhanced test coverage across multiple JavaScript runtimes for better compatibility assurance
+
 ## [2.0.0] - 2025-11-29
 
 ### Changed
