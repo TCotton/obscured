@@ -13,7 +13,7 @@ export type Obscured<T> = ObscuredClass<T> & { readonly [ObscuredBrand]: T };
  * Usage:
  *   - To obscure a sensitive value, use `Obscured.obscure(value)` or `obscured.make(value)`.
  *   - To retrieve the original value, use `obscured.value(obscuredInstance)`.
- *   - These are the factor functions for creating and accessing obscured values.
+ *   - These are the factory functions for creating and accessing obscured values.
  *
  * Security considerations:
  *   - This class prevents accidental exposure of sensitive values, but does not provide
@@ -99,7 +99,7 @@ const isEquivalent = <A, B>(a: Obscured<A>, b: Obscured<B>): boolean => {
  * JSON.stringify(secret);     // '"[OBSCURED]"'
  * obscured.value(secret);     // 'api-key-123'
  * obscured.isObscured(secret); // true
- * isEquivalent(obscured.make('api-key-123'), obscured.make('api-key-456')) // false
+ * obscured.isEquivalent(obscured.make('api-key-123'), obscured.make('api-key-456')) // false
  * ```
  */
 export const obscured = {
