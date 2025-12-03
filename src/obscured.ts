@@ -129,7 +129,7 @@ const obscureKeys = <
 
 /**
  * @function isEquivalent
- * @descripton Checks if two obscured values contain equivalent underlying values.
+ * @description Checks if two obscured values contain equivalent underlying values.
  * Compares the actual values stored in the registry using strict equality (===).
  *
  * @template A - The type of the first obscured value
