@@ -106,7 +106,7 @@ jobs:
 
     - name: Publish to NPM
       if: steps.version-check.outputs.version-changed == 'true'
-      uses: mmarchini-oss/npm-otp-publish@v0.3.2
+      uses: mmarchini-oss/npm-otp-publish@v0
       with:
         npm_token: ${{ secrets.NPM_TOKEN }}
         github_token: ${{ secrets.GITHUB_TOKEN }}
