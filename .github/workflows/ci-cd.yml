@@ -106,9 +106,11 @@ jobs:
 
     - name: Publish to NPM
       if: steps.version-check.outputs.version-changed == 'true'
-      run: npm publish
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      uses: mmarchini-oss/npm-otp-publish@v0.3.2
+      with:
+        npm_token: ${{ secrets.NPM_TOKEN }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_actor: ${{ github.actor }}
 
     - name: Create Git tag
       if: steps.version-check.outputs.version-changed == 'true'
