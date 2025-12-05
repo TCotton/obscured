@@ -26,6 +26,7 @@
 		"test:browser": "vitest run --config vitest.browser.config.ts",
 		"test:bun": "command -v bun > /dev/null 2>&1 && bun --bun vitest run --config vitest.bun.config.ts || echo 'Bun not installed, skipping Bun tests'",
 		"test:watch": "vitest",
+		"typecheck": "tsc --noEmit",
 		"prepublishOnly": "npm run build"
 	},
 	"keywords": [
