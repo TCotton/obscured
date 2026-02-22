@@ -3,7 +3,28 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
+
+## [2.0.6] - 2026-02-15
+
+### Added
+- Node.js 24.x support in CI/CD pipeline
+  - Updated test matrix to include Node.js 24.x alongside 20.x and 22.x
+- Deno runtime setup in GitHub Actions workflow
+  - Added `denoland/setup-deno@v2` action with Deno v2.x
+- Comprehensive JSDoc documentation for all exported functions
+  - Added detailed documentation for `make()`, `value()`, `obscureKeys()`, `isObscured()`, and `isEquivalent()`
+  - Includes parameter descriptions, return types, and usage examples
+
+### Changed
+- Enhanced TypeScript configuration with stricter type checking rules
+  - Added `noImplicitOverride` for better class inheritance safety
+  - Added `allowJs` to support JavaScript files
+  - Added `resolveJsonModule` for JSON imports
+  - Changed target from `esnext` to `es2022` for better compatibility
+  - Updated lib to include `es2022`, `dom`, and `dom.iterable`
+- Updated publish job in CI/CD to use Node.js 22.x instead of 20.x
+- Improved GitHub Actions workflow for NPM publishing with 2FA support
 
 ## [2.0.2] - 2025-11-30
 
